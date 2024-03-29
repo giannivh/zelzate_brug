@@ -1,4 +1,4 @@
-"""Sample API Client."""
+"""API Client."""
 from __future__ import annotations
 
 import asyncio
@@ -25,17 +25,13 @@ class ZelzateBrugApiClientAuthenticationError(
 
 
 class ZelzateBrugApiClient:
-    """Sample API Client."""
+    """API Client."""
 
     def __init__(
         self,
-        username: str,
-        password: str,
         session: aiohttp.ClientSession,
     ) -> None:
-        """Sample API Client."""
-        self._username = username
-        self._password = password
+        """API Client."""
         self._session = session
 
     async def async_get_data(self) -> any:
