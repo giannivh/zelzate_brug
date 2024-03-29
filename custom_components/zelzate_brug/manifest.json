@@ -1,12 +1,12 @@
 {
-  "domain": "integration_blueprint",
-  "name": "Integration blueprint",
+  "domain": "zelzate_brug",
+  "name": "Zelzate Brug",
   "codeowners": [
-    "@ludeeus"
+    "@giannivh"
   ],
   "config_flow": true,
-  "documentation": "https://github.com/ludeeus/integration_blueprint",
+  "documentation": "https://github.com/giannivh/zelzate_brug",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/ludeeus/integration_blueprint/issues",
+  "issue_tracker": "https://github.com/giannivh/zelzate_brug/issues",
   "version": "0.0.0"
 }
