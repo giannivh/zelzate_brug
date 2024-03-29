@@ -36,13 +36,15 @@ class ZelzateBrugDataUpdateCoordinator(DataUpdateCoordinator):
             hass=hass,
             logger=LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(minutes=5),
+            update_interval=timedelta(seconds=30),
         )
 
     async def _async_update_data(self):
         """Update data via library."""
         try:
-            return await self.client.async_get_data()
+            result = await self.client.async_get_data()
+            LOGGER.debug("Got data: " + str(result))
+            return result
         except ZelzateBrugApiClientAuthenticationError as exception:
             raise ConfigEntryAuthFailed(exception) from exception
         except ZelzateBrugApiClientError as exception:
