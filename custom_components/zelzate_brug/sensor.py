@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+from datetime import datetime
 
 from .coordinator import ZelzateBrugDataUpdateCoordinator
 from .entity import ZelzateBrugEntity
@@ -84,3 +85,15 @@ class ZelzateBrugSensor(ZelzateBrugEntity, SensorEntity):
             len(ZB_ICONS),
             ZB_DEFAULT_ICON
         )]
+
+    @property
+    def extra_state_attributes(self):
+        """Return attributes for sensor."""
+        if not self.coordinator.data:
+            return {}
+        attributes = {
+            "last_synced": datetime.now(),
+            "status_code": self.coordinator.data.get("statusCode"),
+            "status_text": remove_html_tags(self.coordinator.data.get("statusText")),
+        }
+        return attributes
