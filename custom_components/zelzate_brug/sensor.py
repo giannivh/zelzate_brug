@@ -3,15 +3,27 @@ from __future__ import annotations
 
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 
-from .const import DOMAIN
 from .coordinator import ZelzateBrugDataUpdateCoordinator
 from .entity import ZelzateBrugEntity
+from .const import (
+    DOMAIN, NAME,
+    ZB_ICONS, ZB_DEFAULT_ICON,
+    ZB_TIME_PATTERN,
+    ZB_CODE_ERROR, ZB_CODE_OPEN_TO_TRAFFIC, ZB_CODE_CLOSED_TO_TRAFFIC
+)
+from .utils import (
+    try_parse_int_or_default,
+    verify_index_or_default,
+    remove_html_tags,
+    extract_match_or_default
+)
+
 
 ENTITY_DESCRIPTIONS = (
     SensorEntityDescription(
-        key="zelzate_brug",
-        name="Integration Sensor",
-        icon="mdi:format-quote-close",
+        key=DOMAIN,
+        name=NAME,
+        icon=ZB_ICONS[0],
     ),
 )
 
@@ -42,5 +54,21 @@ class ZelzateBrugSensor(ZelzateBrugEntity, SensorEntity):
 
     @property
     def native_value(self) -> str:
-        """Return the native value of the sensor."""
-        return self.coordinator.data.get("body")
+        """Return the status of the sensor."""
+        statusCode = self.coordinator.data.get("statusCode")
+        statusText = self.coordinator.data.get("statusText")
+        index = try_parse_int_or_default(statusCode, ZB_CODE_ERROR)
+        if index == ZB_CODE_ERROR:
+            return "Unknown"
+        elif index == ZB_CODE_OPEN_TO_TRAFFIC:
+            return "Open to traffic"
+        elif index == ZB_CODE_CLOSED_TO_TRAFFIC:
+            suffix = extract_match_or_default(
+                statusText,
+                ZB_TIME_PATTERN,
+                "",
+                " until "
+            )
+            return "Closed to traffic" + suffix
+        else:
+            return "Closing to traffic soon"
