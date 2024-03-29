@@ -76,6 +76,7 @@ class ZelzateBrugSensor(ZelzateBrugEntity, SensorEntity):
 
     @property
     def icon(self):
+        """Return the icon of the sensor."""
         index = try_parse_int_or_default(
             self.coordinator.data.get("statusCode"),
             ZB_DEFAULT_ICON

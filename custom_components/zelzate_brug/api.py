@@ -33,7 +33,7 @@ class ZelzateBrugApiClient:
         self,
         session: aiohttp.ClientSession,
     ) -> None:
-        """API Client."""
+        """Init API Client."""
         self._session = session
 
     async def async_get_data(self) -> any:

@@ -20,7 +20,7 @@ def verify_index_or_default(index, length, default_value) -> int:
     return index
 
 def remove_html_tags(input) -> str:
-    """Remove all HTML tags from the given input"""
+    """Remove all HTML tags from the given input."""
     return re.sub(ZB_HTML_TAGS, '', input)
 
 def extract_match_or_default(input, pattern, default_value, prefix = "") -> str:

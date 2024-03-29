@@ -5,6 +5,7 @@ from .const import DOMAIN
 
 class ZelzateBrugFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     """Config flow for ZelzateBrug."""
+
     VERSION = 1
     MINOR_VERSION = 1
 
