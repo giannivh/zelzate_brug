@@ -7,6 +7,8 @@ import socket
 import aiohttp
 import async_timeout
 
+import json
+
 
 class ZelzateBrugApiClientError(Exception):
     """Exception to indicate a general API error."""
@@ -36,18 +38,13 @@ class ZelzateBrugApiClient:
 
     async def async_get_data(self) -> any:
         """Get data from the API."""
-        return await self._api_wrapper(
-            method="get", url="https://jsonplaceholder.typicode.com/posts/1"
+        response = await self._api_wrapper(
+            method="get", url="https://www.zelzatebrug.vlaanderen"
         )
-
-    async def async_set_title(self, value: str) -> any:
-        """Get data from the API."""
-        return await self._api_wrapper(
-            method="patch",
-            url="https://jsonplaceholder.typicode.com/posts/1",
-            data={"title": value},
-            headers={"Content-type": "application/json; charset=UTF-8"},
+        response = await self._api_wrapper(
+            method="post", url="https://www.zelzatebrug.vlaanderen/request.php", data={"action": "status_json"}
         )
+        return json.loads(response)
 
     async def _api_wrapper(
         self,
@@ -63,14 +60,14 @@ class ZelzateBrugApiClient:
                     method=method,
                     url=url,
                     headers=headers,
-                    json=data,
+                    data=data,
                 )
                 if response.status in (401, 403):
                     raise ZelzateBrugApiClientAuthenticationError(
                         "Invalid credentials",
                     )
                 response.raise_for_status()
-                return await response.json()
+                return await response.text()
 
         except asyncio.TimeoutError as exception:
             raise ZelzateBrugApiClientCommunicationError(
