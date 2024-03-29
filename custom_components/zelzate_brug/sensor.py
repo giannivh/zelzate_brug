@@ -72,3 +72,15 @@ class ZelzateBrugSensor(ZelzateBrugEntity, SensorEntity):
             return "Closed to traffic" + suffix
         else:
             return "Closing to traffic soon"
+
+    @property
+    def icon(self):
+        index = try_parse_int_or_default(
+            self.coordinator.data.get("statusCode"),
+            ZB_DEFAULT_ICON
+        )
+        return ZB_ICONS[verify_index_or_default(
+            index,
+            len(ZB_ICONS),
+            ZB_DEFAULT_ICON
+        )]
