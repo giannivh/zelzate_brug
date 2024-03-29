@@ -5,5 +5,5 @@ LOGGER: Logger = getLogger(__package__)
 
 NAME = "Zelzate Brug"
 DOMAIN = "zelzate_brug"
-VERSION = "0.0.0"
-ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
+VERSION = "1.0.0"
+ATTRIBUTION = "Data provided by https://www.zelzatebrug.vlaanderen/"
