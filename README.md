@@ -1,4 +1,4 @@
-<img src="https://github.com/giannivh/zelzate_brug/raw/main/img/brand/brand.jpg"
+<img src="https://github.com/giannivh/zelzate_brug/raw/main/img/brand/icon.png"
      alt="Zelzate Brug"
      align="right"
      style="width: 75px;margin-right: 10px;" />
@@ -14,6 +14,8 @@ Data provided by https://www.zelzatebrug.vlaanderen/
 [![MIT License](https://img.shields.io/github/license/giannivh/zelzate_brug.svg?style=for-the-badge)](https://github.com/giannivh/zelzate_brug/blob/main/LICENSE)
 
 [![maintainer](https://img.shields.io/badge/maintainer-Gianni%20Van%20Hoecke%20%40giannivh-blue.svg?style=for-the-badge&logo=github)](https://github.com/giannivh)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
+
 
 ## Installation
 
