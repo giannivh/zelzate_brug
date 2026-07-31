@@ -1,5 +1,13 @@
 {
     "config": {
-        "step": {}
+        "step": {
+            "user": {
+                "description": "Home Assistant could not read the bridge status. Check that zelzatebrug.vlaanderen is reachable, then try again."
+            }
+        },
+        "error": {
+            "cannot_connect": "Could not reach zelzatebrug.vlaanderen.",
+            "unknown": "Unexpected response from zelzatebrug.vlaanderen."
+        }
     }
 }
