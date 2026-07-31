@@ -44,7 +44,9 @@ People *love* thorough bug reports. I'm not even kidding.
 
 ## Use a Consistent Coding Style
 
-Use [black](https://github.com/ambv/black) to make sure the code follows the style.
+Run [`scripts/lint`](./scripts/lint) to make sure the code follows the style. It runs
+[ruff](https://github.com/astral-sh/ruff) with the rules configured in
+[`.ruff.toml`](./.ruff.toml), which is also what CI checks.
 
 ## Test your code modification
 
