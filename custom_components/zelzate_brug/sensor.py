@@ -2,9 +2,14 @@
 from __future__ import annotations
 
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util import dt as dt_util
 
-from .coordinator import ZelzateBrugDataUpdateCoordinator
+from .coordinator import (
+    ZelzateBrugConfigEntry,
+    ZelzateBrugDataUpdateCoordinator,
+)
 from .entity import ZelzateBrugEntity
 from .const import (
     DOMAIN, NAME,
@@ -29,10 +34,14 @@ ENTITY_DESCRIPTIONS = (
 )
 
 
-async def async_setup_entry(hass, entry, async_add_devices):
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ZelzateBrugConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
     """Set up the sensor platform."""
     coordinator = entry.runtime_data
-    async_add_devices(
+    async_add_entities(
         ZelzateBrugSensor(
             coordinator=coordinator,
             entity_description=entity_description,

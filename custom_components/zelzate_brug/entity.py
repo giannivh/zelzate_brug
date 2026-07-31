@@ -20,6 +20,6 @@ class ZelzateBrugEntity(CoordinatorEntity[ZelzateBrugDataUpdateCoordinator]):
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self.unique_id)},
             name=NAME,
-            model=VERSION,
+            sw_version=VERSION,
             manufacturer=NAME,
         )

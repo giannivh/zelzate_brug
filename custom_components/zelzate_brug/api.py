@@ -32,7 +32,7 @@ class ZelzateBrugApiClient:
         """Init API Client."""
         self._session = session
 
-    async def async_get_data(self) -> any:
+    async def async_get_data(self) -> dict:
         """Get data from the API."""
         page, cookies = await self._api_wrapper(method="get", url=ZB_BASE_URL)
         response, _ = await self._api_wrapper(

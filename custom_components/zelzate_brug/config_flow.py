@@ -11,8 +11,6 @@ class ZelzateBrugFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(self, user_input=None):
         """Handle user step."""
-        if self._async_current_entries():
-            return self.async_abort(reason="single_instance_allowed")
         return self.async_create_entry(
             title="Zelzate Brug",
             data={},
