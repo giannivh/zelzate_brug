@@ -12,6 +12,7 @@ class ZelzateBrugEntity(CoordinatorEntity[ZelzateBrugDataUpdateCoordinator]):
     """ZelzateBrugEntity class."""
 
     _attr_attribution = ATTRIBUTION
+    _attr_has_entity_name = True
 
     def __init__(self, coordinator: ZelzateBrugDataUpdateCoordinator) -> None:
         """Initialize."""

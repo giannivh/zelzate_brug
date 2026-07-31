@@ -12,7 +12,7 @@ from .coordinator import (
 )
 from .entity import ZelzateBrugEntity
 from .const import (
-    DOMAIN, NAME,
+    DOMAIN,
     ZB_ICONS, ZB_DEFAULT_ICON,
     ZB_TIME_PATTERN,
     ZB_CODE_ERROR, ZB_CODE_OPEN_TO_TRAFFIC, ZB_CODE_CLOSED_TO_TRAFFIC
@@ -28,7 +28,7 @@ from .utils import (
 ENTITY_DESCRIPTIONS = (
     SensorEntityDescription(
         key=DOMAIN,
-        name=NAME,
+        name=None,
         icon=ZB_ICONS[0],
     ),
 )
