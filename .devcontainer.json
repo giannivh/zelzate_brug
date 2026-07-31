@@ -1,6 +1,6 @@
 {
     "name": "giannivh/zelzate_brug",
-    "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
+    "image": "mcr.microsoft.com/devcontainers/python:3.14-bookworm",
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [
         8123
