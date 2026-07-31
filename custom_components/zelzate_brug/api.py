@@ -1,7 +1,6 @@
 """API Client."""
 from __future__ import annotations
 
-import asyncio
 import socket
 
 import aiohttp
@@ -91,7 +90,7 @@ class ZelzateBrugApiClient:
                     {name: cookie.value for name, cookie in response.cookies.items()},
                 )
 
-        except asyncio.TimeoutError as exception:
+        except TimeoutError as exception:
             raise ZelzateBrugApiClientCommunicationError(
                 "Timeout error fetching information",
             ) from exception
