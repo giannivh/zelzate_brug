@@ -1,10 +1,10 @@
 """API Client."""
 from __future__ import annotations
 
+import asyncio
 import socket
 
 import aiohttp
-import async_timeout
 
 import json
 import re
@@ -50,7 +50,12 @@ class ZelzateBrugApiClient:
             },
             cookies=cookies,
         )
-        return json.loads(response)
+        try:
+            return json.loads(response)
+        except json.JSONDecodeError as exception:
+            raise ZelzateBrugApiClientError(
+                "Malformed response from the status endpoint",
+            ) from exception
 
     @staticmethod
     def _extract_csrf_token(page: str) -> str:
@@ -72,7 +77,7 @@ class ZelzateBrugApiClient:
     ) -> tuple[str, dict]:
         """Get information from the API, returning its body and the cookies it set."""
         try:
-            async with async_timeout.timeout(10):
+            async with asyncio.timeout(10):
                 response = await self._session.request(
                     method=method,
                     url=url,

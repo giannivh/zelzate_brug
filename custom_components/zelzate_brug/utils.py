@@ -10,7 +10,7 @@ def try_parse_int_or_default(input, default_value) -> int:
     """Try to parse the given input to an int, or return default value when the given input cannot be parsed."""
     try:
         return int(input)
-    except ValueError:
+    except (TypeError, ValueError):
         return default_value
 
 def verify_index_or_default(index, length, default_value) -> int:
@@ -21,10 +21,14 @@ def verify_index_or_default(index, length, default_value) -> int:
 
 def remove_html_tags(input) -> str:
     """Remove all HTML tags from the given input."""
+    if input is None:
+        return ""
     return re.sub(ZB_HTML_TAGS, '', input)
 
 def extract_match_or_default(input, pattern, default_value, prefix = "") -> str:
     """Extract the given pattern from the input, optionally prepending with a prefix."""
+    if input is None:
+        return default_value
     matches = re.search(pattern, input)
     if matches:
         return prefix + matches.group()
