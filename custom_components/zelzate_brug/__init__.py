@@ -7,14 +7,15 @@ Data provided by https://www.zelzatebrug.vlaanderen/
 """
 from __future__ import annotations
 
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import ZelzateBrugApiClient
-from .const import DOMAIN
-from .coordinator import ZelzateBrugDataUpdateCoordinator
+from .coordinator import (
+    ZelzateBrugConfigEntry,
+    ZelzateBrugDataUpdateCoordinator,
+)
 
 PLATFORMS: list[Platform] = [
     Platform.SENSOR,
@@ -22,11 +23,11 @@ PLATFORMS: list[Platform] = [
 
 
 # https://developers.home-assistant.io/docs/config_entries_index/#setting-up-an-entry
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+async def async_setup_entry(hass: HomeAssistant, entry: ZelzateBrugConfigEntry) -> bool:
     """Set up this integration using UI."""
-    hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN][entry.entry_id] = coordinator = ZelzateBrugDataUpdateCoordinator(
+    entry.runtime_data = coordinator = ZelzateBrugDataUpdateCoordinator(
         hass=hass,
+        config_entry=entry,
         client=ZelzateBrugApiClient(
             session=async_get_clientsession(hass),
         ),
@@ -40,14 +41,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+async def async_unload_entry(hass: HomeAssistant, entry: ZelzateBrugConfigEntry) -> bool:
     """Handle removal of an entry."""
-    if unloaded := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        hass.data[DOMAIN].pop(entry.entry_id)
-    return unloaded
+    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
 
-async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+async def async_reload_entry(hass: HomeAssistant, entry: ZelzateBrugConfigEntry) -> None:
     """Reload config entry."""
     await async_unload_entry(hass, entry)
     await async_setup_entry(hass, entry)

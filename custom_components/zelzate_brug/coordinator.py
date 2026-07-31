@@ -15,16 +15,19 @@ from .api import (
 )
 from .const import DOMAIN, LOGGER
 
+type ZelzateBrugConfigEntry = ConfigEntry[ZelzateBrugDataUpdateCoordinator]
+
 
 # https://developers.home-assistant.io/docs/integration_fetching_data#coordinated-single-api-poll-for-data-for-all-entities
-class ZelzateBrugDataUpdateCoordinator(DataUpdateCoordinator):
+class ZelzateBrugDataUpdateCoordinator(DataUpdateCoordinator[dict]):
     """Class to manage fetching data from the API."""
 
-    config_entry: ConfigEntry
+    config_entry: ZelzateBrugConfigEntry
 
     def __init__(
         self,
         hass: HomeAssistant,
+        config_entry: ZelzateBrugConfigEntry,
         client: ZelzateBrugApiClient,
     ) -> None:
         """Initialize."""
@@ -34,6 +37,7 @@ class ZelzateBrugDataUpdateCoordinator(DataUpdateCoordinator):
             logger=LOGGER,
             name=DOMAIN,
             update_interval=timedelta(seconds=30),
+            config_entry=config_entry,
         )
 
     async def _async_update_data(self):

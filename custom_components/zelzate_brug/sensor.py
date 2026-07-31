@@ -31,7 +31,7 @@ ENTITY_DESCRIPTIONS = (
 
 async def async_setup_entry(hass, entry, async_add_devices):
     """Set up the sensor platform."""
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     async_add_devices(
         ZelzateBrugSensor(
             coordinator=coordinator,
