@@ -8,6 +8,10 @@ DOMAIN = "zelzate_brug"
 VERSION = "1.0.0"
 ATTRIBUTION = "Data provided by https://www.zelzatebrug.vlaanderen/"
 
+ZB_BASE_URL = "https://www.zelzatebrug.vlaanderen"
+ZB_STATUS_PATH = "/request.php"
+ZB_CSRF_TOKEN_PATTERN = r'<meta\s+name=["\']csrf-token["\']\s+content=["\']([^"\']+)["\']'
+
 ZB_ICONS = ["mdi:boom-gate-up", "mdi:boom-gate", "mdi:boom-gate-alert"]
 ZB_DEFAULT_ICON = 2
 ZB_TIME_PATTERN = r'\b\d{1,2}:\d{2}\b'

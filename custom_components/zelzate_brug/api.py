@@ -8,6 +8,9 @@ import aiohttp
 import async_timeout
 
 import json
+import re
+
+from .const import ZB_BASE_URL, ZB_CSRF_TOKEN_PATTERN, ZB_STATUS_PATH
 
 
 class ZelzateBrugApiClientError(Exception):
@@ -38,13 +41,27 @@ class ZelzateBrugApiClient:
 
     async def async_get_data(self) -> any:
         """Get data from the API."""
-        response = await self._api_wrapper(
-            method="get", url="https://www.zelzatebrug.vlaanderen"
-        )
-        response = await self._api_wrapper(
-            method="post", url="https://www.zelzatebrug.vlaanderen/request.php", data={"action": "status_json"}
+        page, cookies = await self._api_wrapper(method="get", url=ZB_BASE_URL)
+        response, _ = await self._api_wrapper(
+            method="post",
+            url=ZB_BASE_URL + ZB_STATUS_PATH,
+            data={
+                "action": "status_json",
+                "csrf_token": self._extract_csrf_token(page),
+            },
+            cookies=cookies,
         )
         return json.loads(response)
+
+    @staticmethod
+    def _extract_csrf_token(page: str) -> str:
+        """Extract the CSRF token from the given homepage."""
+        matches = re.search(ZB_CSRF_TOKEN_PATTERN, page, re.IGNORECASE)
+        if not matches:
+            raise ZelzateBrugApiClientError(
+                "No CSRF token found on the homepage",
+            )
+        return matches.group(1)
 
     async def _api_wrapper(
         self,
@@ -52,8 +69,9 @@ class ZelzateBrugApiClient:
         url: str,
         data: dict | None = None,
         headers: dict | None = None,
-    ) -> any:
-        """Get information from the API."""
+        cookies: dict | None = None,
+    ) -> tuple[str, dict]:
+        """Get information from the API, returning its body and the cookies it set."""
         try:
             async with async_timeout.timeout(10):
                 response = await self._session.request(
@@ -61,13 +79,17 @@ class ZelzateBrugApiClient:
                     url=url,
                     headers=headers,
                     data=data,
+                    cookies=cookies,
                 )
                 if response.status in (401, 403):
-                    raise ZelzateBrugApiClientAuthenticationError(
-                        "Invalid credentials",
+                    raise ZelzateBrugApiClientCommunicationError(
+                        "Access denied, the CSRF token or session was rejected",
                     )
                 response.raise_for_status()
-                return await response.text()
+                return (
+                    await response.text(),
+                    {name: cookie.value for name, cookie in response.cookies.items()},
+                )
 
         except asyncio.TimeoutError as exception:
             raise ZelzateBrugApiClientCommunicationError(
@@ -77,6 +99,8 @@ class ZelzateBrugApiClient:
             raise ZelzateBrugApiClientCommunicationError(
                 "Error fetching information",
             ) from exception
+        except ZelzateBrugApiClientError:
+            raise
         except Exception as exception:  # pylint: disable=broad-except
             raise ZelzateBrugApiClientError(
                 "Something really wrong happened!"
