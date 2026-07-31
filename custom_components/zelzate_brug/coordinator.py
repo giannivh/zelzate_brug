@@ -9,11 +9,8 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
 )
-from homeassistant.exceptions import ConfigEntryAuthFailed
-
 from .api import (
     ZelzateBrugApiClient,
-    ZelzateBrugApiClientAuthenticationError,
     ZelzateBrugApiClientError,
 )
 from .const import DOMAIN, LOGGER
@@ -45,7 +42,5 @@ class ZelzateBrugDataUpdateCoordinator(DataUpdateCoordinator):
             result = await self.client.async_get_data()
             LOGGER.debug("Got data: " + str(result))
             return result
-        except ZelzateBrugApiClientAuthenticationError as exception:
-            raise ConfigEntryAuthFailed(exception) from exception
         except ZelzateBrugApiClientError as exception:
             raise UpdateFailed(exception) from exception

@@ -8,7 +8,7 @@ from .const import ATTRIBUTION, DOMAIN, NAME, VERSION
 from .coordinator import ZelzateBrugDataUpdateCoordinator
 
 
-class ZelzateBrugEntity(CoordinatorEntity):
+class ZelzateBrugEntity(CoordinatorEntity[ZelzateBrugDataUpdateCoordinator]):
     """ZelzateBrugEntity class."""
 
     _attr_attribution = ATTRIBUTION

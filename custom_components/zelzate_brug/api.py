@@ -22,12 +22,6 @@ class ZelzateBrugApiClientCommunicationError(
     """Exception to indicate a communication error."""
 
 
-class ZelzateBrugApiClientAuthenticationError(
-    ZelzateBrugApiClientError
-):
-    """Exception to indicate an authentication error."""
-
-
 class ZelzateBrugApiClient:
     """API Client."""
 
